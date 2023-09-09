@@ -17,7 +17,11 @@ RID JoltGroupFilterRID::decode_rid(
 	const auto upper_bits = (uint64_t)p_group_id << 32U;
 	const auto lower_bits = (uint64_t)p_sub_group_id;
 	const auto rid_id = int64_t(upper_bits | lower_bits);
+#ifdef GDEXTENSION
 	return UtilityFunctions::rid_from_int64(rid_id);
+#else
+	return RID::from_uint64(rid_id);
+#endif
 }
 
 bool JoltGroupFilterRID::CanCollide(

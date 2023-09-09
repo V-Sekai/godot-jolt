@@ -21,8 +21,11 @@ public:
 
 	JPH::BodyID get_jolt_id() const { return jolt_id; }
 
+#ifdef GDEXTENSION
 	GodotObject* get_instance() const;
-
+#else
+	Object* get_instance() const;
+#endif
 	Object* get_instance_unsafe() const;
 
 	Object* get_instance_wrapped() const;
@@ -163,7 +166,7 @@ protected:
 
 	virtual void _transform_changed([[maybe_unused]] bool p_lock = true) { }
 
-	LocalVector<JoltShapeInstance3D> shapes;
+	LocalVectorJolt<JoltShapeInstance3D> shapes;
 
 	Vector3 scale = {1.0f, 1.0f, 1.0f};
 

@@ -180,7 +180,7 @@ Vector3 JoltAreaImpl3D::compute_gravity(const Vector3& p_position, bool p_lock) 
 
 	const Vector3 point = get_transform_scaled(p_lock).xform(gravity_vector);
 	const Vector3 to_point = point - p_position;
-	const float to_point_dist_sq = max(to_point.length_squared(), CMP_EPSILON);
+	const float to_point_dist_sq = max((double)to_point.length_squared(), CMP_EPSILON);
 	const Vector3 to_point_dir = to_point / Math::sqrt(to_point_dist_sq);
 
 	const float gravity_dist_sq = point_gravity_distance * point_gravity_distance;

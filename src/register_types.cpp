@@ -13,13 +13,18 @@
 #include "spaces/jolt_debug_geometry_3d.hpp"
 #include "spaces/jolt_physics_direct_space_state_3d.hpp"
 
+#ifndef GDEXTENSION
+#include "../register_types.h"
+#else
+
 #include <mimalloc-new-delete.h>
 
 namespace {
+#endif
 
 JoltPhysicsServerFactory3D* server_factory = nullptr;
 
-void on_initialize(ModuleInitializationLevel p_level) {
+void initialize_jolt_module(ModuleInitializationLevel p_level) {
 	switch (p_level) {
 		case MODULE_INITIALIZATION_LEVEL_CORE: {
 		} break;
@@ -59,7 +64,7 @@ void on_initialize(ModuleInitializationLevel p_level) {
 	}
 }
 
-void on_terminate(ModuleInitializationLevel p_level) {
+void uninitialize_jolt_module(ModuleInitializationLevel p_level) {
 	switch (p_level) {
 		case MODULE_INITIALIZATION_LEVEL_CORE: {
 		} break;
@@ -75,6 +80,7 @@ void on_terminate(ModuleInitializationLevel p_level) {
 	}
 }
 
+#ifdef GDEXTENSION
 } // namespace
 
 extern "C" {
@@ -86,8 +92,8 @@ GDExtensionBool GDE_EXPORT godot_jolt_main(
 ) {
 	const GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, p_initialization);
 
-	init_obj.register_initializer(&on_initialize);
-	init_obj.register_terminator(&on_terminate);
+	init_obj.register_initializer(&initialize_jolt_module);
+	init_obj.register_terminator(&uninitialize_jolt_module);
 
 	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SERVERS);
 
@@ -95,3 +101,4 @@ GDExtensionBool GDE_EXPORT godot_jolt_main(
 }
 
 } // extern "C"
+#endif

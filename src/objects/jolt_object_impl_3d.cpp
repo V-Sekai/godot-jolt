@@ -19,9 +19,15 @@ JoltObjectImpl3D::~JoltObjectImpl3D() {
 	delete_safely(jolt_settings);
 }
 
+#ifdef GDEXTENSION
 GodotObject* JoltObjectImpl3D::get_instance() const {
 	return internal::gdextension_interface_object_get_instance_from_id(instance_id);
 }
+#else
+Object* JoltObjectImpl3D::get_instance() const {
+	return ObjectDB::get_instance(instance_id);
+}
+#endif
 
 Object* JoltObjectImpl3D::get_instance_unsafe() const {
 	// HACK(mihe): This is being deliberately and incorrectly cast to a godot-cpp `Object` when in
@@ -101,7 +107,7 @@ Transform3D JoltObjectImpl3D::get_transform_scaled(bool p_lock) const {
 
 void JoltObjectImpl3D::set_transform(Transform3D p_transform, bool p_lock) {
 	Vector3 new_scale;
-	Math::decompose(p_transform, new_scale);
+	MathEx::decompose(p_transform, new_scale);
 
 	// HACK(mihe): Ideally we would do an exact comparison here, but that would likely mismatch
 	// quite often due to the nature of floating-point numbers. This does mean that the transform we
@@ -276,7 +282,7 @@ void JoltObjectImpl3D::add_shape(
 	bool p_lock
 ) {
 	Vector3 shape_scale;
-	Math::decompose(p_transform, shape_scale);
+	MathEx::decompose(p_transform, shape_scale);
 
 	shapes.emplace_back(this, p_shape, p_transform, shape_scale, p_disabled);
 
@@ -363,7 +369,7 @@ void JoltObjectImpl3D::set_shape_transform(int32_t p_index, Transform3D p_transf
 	ERR_FAIL_INDEX(p_index, shapes.size());
 
 	Vector3 new_scale;
-	Math::decompose(p_transform, new_scale);
+	MathEx::decompose(p_transform, new_scale);
 
 	JoltShapeInstance3D& shape = shapes[p_index];
 

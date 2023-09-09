@@ -1,3 +1,4 @@
+/* THIS FILE IS GENERATED DO NOT EDIT */
 #include "jolt_physics_direct_space_state_3d.hpp"
 
 #include "objects/jolt_area_impl_3d.hpp"
@@ -135,10 +136,10 @@ int32_t JoltPhysicsDirectSpaceState3D::_intersect_point(
 }
 
 int32_t JoltPhysicsDirectSpaceState3D::_intersect_shape(
-	const RID& p_shape_rid,
+	RID p_shape_rid,
 	const Transform3D& p_transform,
 	[[maybe_unused]] const Vector3& p_motion,
-	double p_margin,
+	real_t p_margin,
 	uint32_t p_collision_mask,
 	bool p_collide_with_bodies,
 	bool p_collide_with_areas,
@@ -206,10 +207,10 @@ int32_t JoltPhysicsDirectSpaceState3D::_intersect_shape(
 }
 
 bool JoltPhysicsDirectSpaceState3D::_cast_motion(
-	const RID& p_shape_rid,
+	RID p_shape_rid,
 	const Transform3D& p_transform,
 	const Vector3& p_motion,
-	double p_margin,
+	real_t p_margin,
 	uint32_t p_collision_mask,
 	bool p_collide_with_bodies,
 	bool p_collide_with_areas,
@@ -262,10 +263,10 @@ bool JoltPhysicsDirectSpaceState3D::_cast_motion(
 }
 
 bool JoltPhysicsDirectSpaceState3D::_collide_shape(
-	const RID& p_shape_rid,
+	RID p_shape_rid,
 	const Transform3D& p_transform,
 	[[maybe_unused]] const Vector3& p_motion,
-	double p_margin,
+	real_t p_margin,
 	uint32_t p_collision_mask,
 	bool p_collide_with_bodies,
 	bool p_collide_with_areas,
@@ -336,10 +337,10 @@ bool JoltPhysicsDirectSpaceState3D::_collide_shape(
 }
 
 bool JoltPhysicsDirectSpaceState3D::_rest_info(
-	const RID& p_shape_rid,
+	RID p_shape_rid,
 	const Transform3D& p_transform,
 	[[maybe_unused]] const Vector3& p_motion,
-	double p_margin,
+	real_t p_margin,
 	uint32_t p_collision_mask,
 	bool p_collide_with_bodies,
 	bool p_collide_with_areas,
@@ -406,7 +407,7 @@ bool JoltPhysicsDirectSpaceState3D::_rest_info(
 }
 
 Vector3 JoltPhysicsDirectSpaceState3D::_get_closest_point_to_object_volume(
-	const RID& p_object,
+	RID p_object,
 	const Vector3& p_point
 ) const {
 	auto* physics_server = static_cast<JoltPhysicsServer3D*>(PhysicsServer3D::get_singleton());
@@ -517,14 +518,14 @@ bool JoltPhysicsDirectSpaceState3D::test_body_motion(
 	Transform3D transform = MathEx::decomposed(p_transform, scale);
 
 	Vector3 recovery;
-	const bool recovered = _body_motion_recover(p_body, transform, p_margin, recovery);
+	const bool recovered = body_motion_recover(p_body, transform, p_margin, recovery);
 
 	transform.origin += recovery;
 
 	float safe_fraction = 1.0f;
 	float unsafe_fraction = 1.0f;
 
-	const bool hit = _body_motion_cast(
+	const bool hit = body_motion_cast(
 		p_body,
 		transform,
 		scale,
@@ -537,7 +538,7 @@ bool JoltPhysicsDirectSpaceState3D::test_body_motion(
 	bool collided = false;
 
 	if (hit || (recovered && p_recovery_as_collision)) {
-		collided = _body_motion_collide(
+		collided = body_motion_collide(
 			p_body,
 			transform.translated(p_motion * unsafe_fraction),
 			p_motion.length(),
@@ -708,7 +709,7 @@ bool JoltPhysicsDirectSpaceState3D::_cast_motion_impl(
 	return collided;
 }
 
-bool JoltPhysicsDirectSpaceState3D::_body_motion_recover(
+bool JoltPhysicsDirectSpaceState3D::body_motion_recover(
 	const JoltBodyImpl3D& p_body,
 	const Transform3D& p_transform,
 	float p_margin,
@@ -815,7 +816,7 @@ bool JoltPhysicsDirectSpaceState3D::_body_motion_recover(
 	return recovered;
 }
 
-bool JoltPhysicsDirectSpaceState3D::_body_motion_cast(
+bool JoltPhysicsDirectSpaceState3D::body_motion_cast(
 	const JoltBodyImpl3D& p_body,
 	const Transform3D& p_transform,
 	const Vector3& p_scale,
@@ -879,7 +880,7 @@ bool JoltPhysicsDirectSpaceState3D::_body_motion_cast(
 	return collided;
 }
 
-bool JoltPhysicsDirectSpaceState3D::_body_motion_collide(
+bool JoltPhysicsDirectSpaceState3D::body_motion_collide(
 	const JoltBodyImpl3D& p_body,
 	const Transform3D& p_transform,
 	float p_distance,
@@ -969,3 +970,4 @@ bool JoltPhysicsDirectSpaceState3D::_body_motion_collide(
 
 	return count > 0;
 }
+
